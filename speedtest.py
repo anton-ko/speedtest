@@ -605,7 +605,7 @@ def speedtest():
             sys.exit(1)
     else:
         if args.verbose:
-            print_('Selecting 5 servers based on location:\r')
+            print_('Selecting 10 servers based on location:\r')
             print_(('  Skipping the closest server hosted by '
                 '%(sponsor)s (%(name)s) [%(d)0.2f km]' % servers[0])
                     .encode('utf-8', 'ignore'))
