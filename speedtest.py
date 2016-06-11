@@ -592,7 +592,7 @@ def speedtest():
         servers = closestServers(config['client'])
 
     if args.verbose:
-        print_('Testing from %(isp)s (%(ip)s)...' % config['client'])
+        print_('Testing from %(isp)s ...' % config['client'])
         sys.stdout.flush()
     if args.server:
         try:
