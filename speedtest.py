@@ -401,7 +401,7 @@ def getConfig():
     return config
 
 
-def closestServers(client, n = 6):
+def closestServers(client, n = 11):
     """Determine the N closest speedtest.net servers based on geographic
     distance
     0 for All
