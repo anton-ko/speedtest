@@ -427,10 +427,13 @@ def closestServers(client, n = 11, min_distance = 0):
                 serversxml.append(uh.read(10240))
                 if len(serversxml[-1]) == 0:
                     break
+            if not ''.join(serversxml).strip():
+               	continue
             if int(uh.code) != 200:
                 uh.close()
                 raise SpeedtestCliServerListError
             uh.close()
+
             try:
                 try:
                     root = ET.fromstring(''.encode().join(serversxml))
