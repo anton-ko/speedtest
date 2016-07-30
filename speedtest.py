@@ -401,7 +401,7 @@ def getConfig():
     return config
 
 
-def closestServers(client, n = 11):
+def closestServers(client, n = 11, min_distance = 0):
     """Determine the N closest speedtest.net servers based on geographic
     distance
     0 for All
@@ -450,10 +450,11 @@ def closestServers(client, n = 11):
                              [float(attrib.get('lat')),
                               float(attrib.get('lon'))])
                 attrib['d'] = d
-                if d not in servers:
-                    servers[d] = [attrib]
-                else:
-                    servers[d].append(attrib)
+                if d >= min_distance:
+                    if d not in servers:
+                        servers[d] = [attrib]
+                    else:
+                        servers[d].append(attrib)
             del root
             del serversxml
             del elements
@@ -589,7 +590,7 @@ def speedtest():
         print_('Retrieving speedtest.net server list...')
         sys.stdout.flush()
     if not args.server:
-        servers = closestServers(config['client'])
+        servers = closestServers(config['client'], 15, 30)
 
     if args.verbose:
         print_('Testing from %(isp)s ...' % config['client'])
@@ -605,12 +606,8 @@ def speedtest():
             sys.exit(1)
     else:
         if args.verbose:
-            print_('Selecting 10 servers based on location:\r')
-            print_(('  Skipping the closest server hosted by '
-                '%(sponsor)s (%(name)s) [%(d)0.2f km]' % servers[0])
-                    .encode('utf-8', 'ignore'))
+            print_('Selecting 15 servers that are not too close:\r')
             sys.stdout.flush()
-        del servers[0]
         for i,s in enumerate(servers):
             s['latency'] = get_latency(s)
             s['index'] = i+1
